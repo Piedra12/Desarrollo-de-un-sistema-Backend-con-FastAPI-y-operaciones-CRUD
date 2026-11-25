@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPanel | Gestión Escolar</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="school-icon">🎓</div>
+        <h1>EduPanel</h1>
+        <p class="subtitle">Sistema de Gestión Escolar</p>
+
+        <form id="loginForm">
+            <label>Usuario</label>
+            <input type="text" id="username" placeholder="Ingresa tu usuario" required>
+
+            <label>Contraseña</label>
+            <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
+
+            <button type="submit" class="primary-btn">Ingresar al sistema</button>
+        </form>
+
+        <p class="login-note">Portal académico · Administración escolar</p>
+    </div>
+</div>
+
+<!-- SISTEMA -->
+<div id="appScreen" class="app-screen hidden">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <h2>EduPanel</h2>
+                <small>Portal académico</small>
+            </div>
+        </div>
+
+        <p class="menu-label">MENÚ PRINCIPAL</p>
+
+        <nav>
+            <button class="nav-btn active" data-page="dashboard">⌂ Inicio</button>
+            <button class="nav-btn" data-page="alumnos">♙ Alumnos</button>
+            <button class="nav-btn" data-page="carreras">▤ Carreras</button>
+            <button class="nav-btn" data-page="materias">▣ Materias</button>
+            <button class="nav-btn" data-page="inscripciones">▦ Inscripciones</button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="user-mini">
+                <div class="avatar">U</div>
+                <div>
+                    <strong id="userDisplay">Usuario</strong>
+                    <small>Usuario del sistema</small>
+                </div>
+            </div>
+            <button id="logoutBtn" class="logout-btn">↪ Cerrar sesión</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <h1 id="pageTitle">Inicio</h1>
+                <p>Panel de administración académica</p>
+            </div>
+            <div class="top-user">
+                <div class="avatar">U</div>
+                <span id="topUser">Usuario</span>
+            </div>
+        </header>
+
+        <section id="dashboardPage" class="page">
+            <div class="welcome-banner">
+                <div>
+                    <h2>¡Bienvenido al portal escolar!</h2>
+                    <p>Administra y consulta la información académica.</p>
+                </div>
+                <span class="welcome-emoji">📚</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">♙</div>
+                    <p>Total de alumnos</p>
+                    <h2 id="statAlumnos">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">▤</div>
+                    <p>Carreras</p>
+                    <h2 id="statCarreras">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">▣</div>
+                    <p>Materias</p>
+                    <h2 id="statMaterias">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">▦</div>
+                    <p>Inscripciones</p>
+                    <h2 id="statInscripciones">0</h2>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Acerca del sistema</h3>
+                <p>
+                    EduPanel permite administrar información escolar
+                    mediante una API desarrollada con FastAPI y una
+                    base de datos relacional.
+                </p>
+            </div>
+        </section>
+
+        <section id="dataPage" class="page hidden">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2 id="tableTitle">Registros</h2>
+                        <p id="tableDescription">Administración de registros</p>
+                    </div>
+                    <button id="addBtn" class="primary-btn">+ Agregar</button>
+                </div>
+
+                <div id="formArea" class="form-area hidden"></div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <p id="message" class="message"></p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
