@@ -1,14 +1,25 @@
-# EduPanel - Sistema de Gestión Escolar (FastAPI)
+Reporte de práctica: Sistema Backend REST con FastAPI y SQLModel (EduPanel)
+Introducción
+En el desarrollo de aplicaciones modernas, contar con un backend sólido, claro y bien estructurado es fundamental para que la información fluya de manera segura y ordenada. En esta práctica se presenta el diseño y la construcción de EduPanel, un sistema de gestión escolar pensado para facilitar el control académico de carreras, alumnos, materias e inscripciones de una forma intuitiva y confiable. Más allá de cumplir con los requerimientos técnicos de una API REST, este proyecto permitió poner en práctica cómo las relaciones entre tablas y las validaciones de datos trabajan en conjunto para proteger la coherencia de la información en un escenario real.
 
-Sistema backend desarrollado con **Python**, **FastAPI** y **SQLModel** para administrar información escolar mediante una API REST con cuatro tablas relacionadas (`carrera`, `alumno`, `materia` e `inscripcion`) y operaciones CRUD completas.
+Objetivo de la práctica
+El propósito principal fue desarrollar un backend REST utilizando Python, FastAPI y SQLModel conectado a una base de datos relacional en SQLite para administrar la información escolar de EduPanel. A lo largo del desarrollo se buscó implementar cuatro tablas relacionadas, operaciones CRUD completas en cada entidad, validaciones de entrada con Pydantic, reglas de integridad referencial y documentación interactiva mediante Swagger UI en la ruta /docs, complementando el servicio con una interfaz web conectada directamente a los endpoints.
 
-## Estructura del proyecto
+Arquitectura y tecnologías empleadas
+Para dar vida al proyecto se utilizó Python 3.10 junto con FastAPI como framework principal, aprovechando su rapidez y su capacidad para generar documentación automática y servir archivos estáticos. En la capa de datos y validación se integraron SQLModel y Pydantic, lo que permitió definir de manera limpia tanto las tablas de la base de datos como los esquemas de validación para cada petición. El almacenamiento se resolvió con SQLite en el archivo universidad.db, activando explícitamente la instrucción PRAGMA foreign_keys=ON en cada conexión mediante eventos de SQLAlchemy para garantizar que las claves foráneas se respeten en todo momento. Por su parte, las pruebas y la interacción visual se apoyaron tanto en Swagger UI como en una interfaz web desarrollada con HTML, CSS y JavaScript.
 
-```text
-├── main.py
-├── schema.sql
-├── README.md
-└── static/
-    ├── index.html
-    ├── app.js
-    └── styles.css
+Diseño de la base de datos y relaciones
+El corazón del sistema está formado por cuatro tablas estrechamente vinculadas. La tabla carrera guarda la información base de cada programa académico mediante su identificador, nombre y descripción. La tabla alumno registra los datos personales y académicos de cada estudiante, incluyendo su edad, su semestre actual o cursado y la clave foránea carrera_id que lo asocia con su carrera. De forma similar, la tabla materia almacena cada asignatura con su nombre, créditos, ciclo escolar, semestre y la clave foránea carrera_id para ubicarla dentro de su plan de estudios correspondiente. Por último, la tabla inscripcion funciona como punto de encuentro entre un alumno y una materia a través de las claves foráneas alumno_id y materia_id, registrando además la calificación obtenida.
+
+Para cuidar que los datos siempre tengan sentido dentro del contexto escolar, se incorporaron diversas reglas de validación. Antes de guardar o actualizar un registro, el sistema verifica que las referencias existan y responde con un error 404 cuando no se encuentra el recurso indicado. En el caso de las inscripciones, se asegura que la materia pertenezca a la misma carrera que cursa el alumno, que el semestre de la materia no sea mayor al semestre actual del estudiante y que no se duplique una misma inscripción. De igual manera, si se intenta eliminar una carrera, un alumno o una materia que aún tiene registros dependientes, el backend detiene la acción con un código 400 para evitar datos huérfanos.
+
+Endpoints y funcionamiento del sistema
+Cada una de las cuatro entidades dispone de sus cinco operaciones CRUD estándar: POST para crear nuevos registros, GET para consultar el listado completo, GET por identificador para revisar un elemento puntual, PUT para actualizar información existente y DELETE para eliminar registros cuando no existen dependencias. Adicionalmente, la consulta de materias permite filtrar por carrera, ciclo escolar y semestre, mientras que el recurso de alumnos incorpora una ruta dedicada para obtener las materias disponibles según su carrera y los semestres que ha cursado.
+
+Desde la interfaz web de EduPanel es posible ingresar al panel, consultar estadísticas generales en tiempo real y gestionar de forma ágil carreras, alumnos, materias e inscripciones. En la sección de materias se pueden aplicar filtros por carrera, ciclo escolar y semestre, y dentro del formulario de inscripciones se despliegan automáticamente las materias disponibles para el alumno seleccionado de acuerdo con su avance semestral.
+
+Entregables y pruebas realizadas
+El proyecto quedó organizado de manera clara con el archivo main.py en la raíz, acompañado de schema.sql para la definición de la base de datos, README.md con las instrucciones de instalación y ejecución, y la carpeta static que reúne index.html, app.js y styles.css, generándose automáticamente universidad.db al iniciar el servidor con uvicorn main:app --reload. Durante el proceso de pruebas se fueron puliendo detalles importantes, como corregir la importación de sqlmodel, alinear el frontend con las cuatro tablas del backend, reforzar el bloqueo de eliminaciones con registros asociados y recrear la base de datos al integrar nuevos campos. Las pruebas realizadas en /docs y en el panel web confirmaron que todas las operaciones responden correctamente ante casos exitosos y escenarios de error.
+
+Conclusión
+El desarrollo de EduPanel permitió consolidar los fundamentos de la creación de APIs REST con FastAPI y bases de datos relacionales, logrando un sistema funcional, ordenado y fácil de probar. Más allá de cumplir con cada punto solicitado, la experiencia dejó en claro la importancia de validar los datos desde el origen y cuidar las relaciones entre entidades para ofrecer una aplicación confiable tanto para quien la administra desde la interfaz como para quien la consulta desde la documentación técnica.
